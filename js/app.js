@@ -57,6 +57,7 @@ function carrito() {
                 producto1.productoSeleccionado();
                 precioAPagar = producto1.precioProd;
                 alert("Usted deberá pagar: " + precioAPagar);
+                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
         
@@ -64,6 +65,7 @@ function carrito() {
                 producto2.productoSeleccionado();
                 precioAPagar = producto2.precioProd;
                 alert("Usted deberá pagar: " + precioAPagar);
+                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
             
@@ -71,6 +73,7 @@ function carrito() {
                 producto3.productoSeleccionado();
                 precioAPagar = producto3.precioProd;
                 alert("Usted deberá pagar: " + precioAPagar);
+                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
             
@@ -78,6 +81,7 @@ function carrito() {
                 producto4.productoSeleccionado();
                 precioAPagar = producto4.precioProd;
                 alert("Usted deberá pagar: " + precioAPagar);
+                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
         
@@ -90,7 +94,7 @@ function carrito() {
 
     function pago(opcionMetodoPago) {
 
-        let disponible = Number(prompt(`Ingrese su dinero disponible: `));
+        
 
         do {
         opcionMetodoPago = Number(prompt(`Seleccione el método de pago deseado: \n
@@ -125,14 +129,13 @@ function carrito() {
             if ((efectivo == 1) && (disponible >= precioAPagar)) {
 
                 alert("¡Compra realizada!");
+                carrito();
             
             } else if ((credito == 1) && (disponible >= precioAPagar)) {
             
-            } else
+            } else {
                 alert("Fondos insuficientes");
-                pago(opcionMetodoPago);
-            {
-
+                carrito();
             }
 
         }

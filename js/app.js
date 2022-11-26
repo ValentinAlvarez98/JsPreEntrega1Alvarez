@@ -3,7 +3,10 @@ let contrasenas = [];
 let opcionMenu = 0;
 let opcionProductos = 0;
 let opcionMetodoPago = 0;
+let opcionCuotas = 0;
 let disponible = 0;
+let disponibleTarjeta = 0;
+let vuelto = 0;
 let efectivo = 0;
 let credito = 0;
 let interes = 0;
@@ -18,7 +21,7 @@ function Producto(nombreProd, precioProd, categoriaProd, marcaProd, codigoProd) 
     this.productoSeleccionado = function () {
         alert(`Usted a seleccionado una unidad del producto: \n` +
             this.nombreProd + `\n`
-            + `Al precio de: ` + "USD " + this.precioProd);
+        );
     }
 }
 
@@ -27,17 +30,8 @@ const producto2 = new Producto("AMD PROCESADOR RYZEN 5 5600", 224, "PROCESADORES
 const producto3 = new Producto("GIGABYTE PLACA B450M DS3H V2", 93, "MOTHERBOARD", "GIGABYTE", "BFXGB45D");
 const producto4 = new Producto("NETAC MEMORIA SHADOW DDR4 16GB PC3200 RED", 60, "MEMORIA RAM", "NETAC", "BFXNS16R");
 
-console.log("Lista de productos existentes: ")
-console.log("===============================")
-console.log(producto1);
-console.log(producto2);
-console.log(producto3);
-console.log(producto4);
-console.log("===============================")
-
 function carrito() {
 
-    
     let precioAPagar = 0;
     
     do {
@@ -50,38 +44,30 @@ function carrito() {
     USD 93,00 \n
     4) Memoria RAM:` + " " + `NETAC SHADOW DDR4 16GB 3200 RED \n
     USD 60,00 \n
-    0) Salir \n`));
+    0) Volver \n`));
         
         switch (opcionProductos) {
         case 1:
                 producto1.productoSeleccionado();
                 precioAPagar = producto1.precioProd;
-                alert("Usted deberá pagar: " + precioAPagar);
-                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
         
         case 2:
                 producto2.productoSeleccionado();
                 precioAPagar = producto2.precioProd;
-                alert("Usted deberá pagar: " + precioAPagar);
-                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
             
         case 3:
                 producto3.productoSeleccionado();
                 precioAPagar = producto3.precioProd;
-                alert("Usted deberá pagar: " + precioAPagar);
-                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
             
         case 4:
                 producto4.productoSeleccionado();
                 precioAPagar = producto4.precioProd;
-                alert("Usted deberá pagar: " + precioAPagar);
-                disponible = Number(prompt(`Ingrese su dinero disponible: `));
                 pago(opcionMetodoPago);
             break;
         
@@ -94,13 +80,11 @@ function carrito() {
 
     function pago(opcionMetodoPago) {
 
-        
-
         do {
         opcionMetodoPago = Number(prompt(`Seleccione el método de pago deseado: \n
         1) Efectivo \n 
         2) Crédito (5% Interés) \n
-        0) Salir \n`));
+        0) Volver \n`));
         
         switch (opcionMetodoPago) {
             case 1:
@@ -115,6 +99,8 @@ function carrito() {
                 alert(`Usted a seleccionado: \n
                 Crédito`);
                 credito = 1;
+                calculadoraPago();
+                opcionMetodoPago = 0;
                 break;
             
             case 0:
@@ -124,25 +110,117 @@ function carrito() {
             
         } while (opcionMetodoPago != 0);
 
-        function calculadoraPago() {
-        
-            if ((efectivo == 1) && (disponible >= precioAPagar)) {
 
-                alert("¡Compra realizada!");
-                carrito();
+        function calculadoraPago() {
+
+        interes = precioAPagar * (5 / 100);
+        let precioMasInteres = precioAPagar + interes;
+        const precioCuotas = [];
+        
+            if (efectivo == 1) {
+
+                alert(`El precio total a pagar es de:\n
+                USD ${precioAPagar}`);
+                disponible = Number(prompt(`Ingrese su dinero disponible: `));
+
+                if (disponible >= precioAPagar) {
+                    alert("¡Compra realizada!");
+                    vuelto = disponible - precioAPagar;
+                    alert(`Le han sobrado: ${vuelto}`);
+                    alert("¡Volviendo al menú de productos!");
+                    carrito();
+                } else {
+                    alert("Fondos insuficientes");
+                    carrito();
+                }
+
             
-            } else if ((credito == 1) && (disponible >= precioAPagar)) {
+            } else if (credito == 1) {
+
+                alert(`El precio total a pagar es de:\n
+                USD ${precioMasInteres}`);
+                disponibleTarjeta = Number(prompt(`Ingrese su dinero disponible: `));
+
+                if (disponibleTarjeta >= precioMasInteres) {
+                    for (let i = 1; i <= 12; i++) {
+                    let precioCuota = precioMasInteres / i;
+                    precioCuotas.push(precioCuota);
+                    }
+                cuotas();
+                } else {
+                    alert("Fondos insuficientes");
+                    carrito();
+                }
             
             } else {
-                alert("Fondos insuficientes");
-                carrito();
-            }
-
+                pago();
         }
+        
+        function cuotas() {
+
+        do {
+            opcionCuotas = Number(prompt(`Seleccione la cantidad de cuotas: \n
+            1) 1 Cuota: 1x USD ${precioCuotas[0]} \n
+            2) 3 Cuotas: 3x USD ${precioCuotas[2]} \n
+            3) 6 Cuotas: 6x USD ${precioCuotas[5]} \n
+            4) 12 Cuotas: 12x USD ${precioCuotas[11]} \n
+            0) Volver`));
+            
+            switch (opcionCuotas) {
+                case 1:
+                    alert(`¡Compra en 1 cuota de USD ${precioCuotas[0]}, realizada!`);
+                    vuelto = disponibleTarjeta - precioMasInteres;
+                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert("¡Volviendo al menú de productos!");
+                    opcionCuotas = 0;
+                    carrito();
+                    break;
+                case 2:
+                    alert(`¡Compra en 3 cuotas de USD ${precioCuotas[2]}, realizada!`);
+                    vuelto = disponibleTarjeta - precioMasInteres;
+                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert("¡Volviendo al menú de productos!");
+                    opcionCuotas = 0;
+                    carrito();
+                    break;
+                case 3:
+                    alert(`¡Compra en 6 cuotas de USD ${precioCuotas[5]}, realizada!`);
+                    vuelto = disponibleTarjeta - precioMasInteres;
+                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert("¡Volviendo al menú de productos!");
+                    opcionCuotas = 0;
+                    carrito();
+                    break;
+                case 4:
+                    alert(`¡Compra en 12 cuotas de USD ${precioCuotas[11]}, realizada!`);
+                    vuelto = disponibleTarjeta - precioMasInteres;
+                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert("¡Volviendo al menú de productos!");
+                    opcionCuotas = 0;
+                    carrito();
+                    break;
+                
+                case 0:
+                    alert("¡Volviendo al menú de pagos!");
+                    pago();
+            }
+            } while (opcionCuotas != 0);
+            
+    }
 
     }
 
+    }   
+
 }
+
+console.log("Lista de productos disponibles: ")
+console.log("===============================")
+console.log(producto1);
+console.log(producto2);
+console.log(producto3);
+console.log(producto4);
+console.log("===============================")
 
 alert("¡Bienvenido a Banifox!");
 
@@ -157,7 +235,7 @@ do {
         case 1:
             let usuario = prompt("Ingrese su usuario: ");
             let contrasena = prompt("Ingrese su contraseña: ");
-            if ((usuario == usuarios) && (contrasena == contrasenas)) {
+            if ((usuario == usuarios && usuarios != "") && (contrasena == contrasenas && contrasenas != "") ) {
                 alert("¡Ingresaste correctamente!");
                 carrito();
             } else {
@@ -166,10 +244,16 @@ do {
             break;
         
         case 2:
-            let nuevoUsuario = prompt("Ingrese su usuario: ");
-            usuarios.push(nuevoUsuario);
-            let nuevaContrasena = prompt("Ingrese su contraseña: ");
-            contrasenas.push(nuevaContrasena);
+            let nuevoUsuario = prompt("Ingrese un usuario: ");
+            let nuevaContrasena = prompt("Ingrese una contraseña: ");
+            if ((nuevoUsuario != "") && (nuevaContrasena != "")) {
+                usuarios.push(nuevoUsuario);
+                contrasenas.push(nuevaContrasena);
+            } else {
+                alert("No puede ingresar un espacio vacio, intentelo de nuevo");
+                opcionMenu = 2;
+                break;
+            }
             console.log("Su usuario es: " + usuarios + " Y su contraseña es: " + contrasenas );
             break;
         
@@ -177,5 +261,4 @@ do {
             alert("¡Hasta luego!");
     }
 }while (opcionMenu != 0);
-
 

@@ -138,13 +138,13 @@ function carrito() {
             } else if (credito == 1) {
 
                 alert(`El precio total a pagar es de:\n
-                USD ${precioMasInteres}`);
+                USD ${precioAPagar} + USD ${interes.toFixed(2)} = USD ${precioMasInteres.toFixed(2)}`);
                 disponibleTarjeta = Number(prompt(`Ingrese su dinero disponible: `));
 
                 if (disponibleTarjeta >= precioMasInteres) {
                     for (let i = 1; i <= 12; i++) {
                     let precioCuota = precioMasInteres / i;
-                    precioCuotas.push(precioCuota);
+                    precioCuotas.push(precioCuota.toFixed(2));
                     }
                 cuotas();
                 } else {
@@ -170,7 +170,7 @@ function carrito() {
                 case 1:
                     alert(`¡Compra en 1 cuota de USD ${precioCuotas[0]}, realizada!`);
                     vuelto = disponibleTarjeta - precioMasInteres;
-                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert(`Le han sobrado: USD ${vuelto.toFixed(2)}`);
                     alert("¡Volviendo al menú de productos!");
                     opcionCuotas = 0;
                     carrito();
@@ -178,7 +178,7 @@ function carrito() {
                 case 2:
                     alert(`¡Compra en 3 cuotas de USD ${precioCuotas[2]}, realizada!`);
                     vuelto = disponibleTarjeta - precioMasInteres;
-                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert(`Le han sobrado: USD ${vuelto.toFixed(2)}`);
                     alert("¡Volviendo al menú de productos!");
                     opcionCuotas = 0;
                     carrito();
@@ -186,7 +186,7 @@ function carrito() {
                 case 3:
                     alert(`¡Compra en 6 cuotas de USD ${precioCuotas[5]}, realizada!`);
                     vuelto = disponibleTarjeta - precioMasInteres;
-                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert(`Le han sobrado: USD ${vuelto.toFixed(2)}`);
                     alert("¡Volviendo al menú de productos!");
                     opcionCuotas = 0;
                     carrito();
@@ -194,7 +194,7 @@ function carrito() {
                 case 4:
                     alert(`¡Compra en 12 cuotas de USD ${precioCuotas[11]}, realizada!`);
                     vuelto = disponibleTarjeta - precioMasInteres;
-                    alert(`Le han sobrado: USD ${vuelto}`);
+                    alert(`Le han sobrado: USD ${vuelto.toFixed(2)}`);
                     alert("¡Volviendo al menú de productos!");
                     opcionCuotas = 0;
                     carrito();

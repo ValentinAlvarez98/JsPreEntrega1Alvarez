@@ -90,13 +90,13 @@ function carrito() {
 
     function pago(opcionMetodoPago) {
 
+        let disponible = Number(prompt(`Ingrese su dinero disponible: `));
+
         do {
         opcionMetodoPago = Number(prompt(`Seleccione el método de pago deseado: \n
         1) Efectivo \n 
         2) Crédito (5% Interés) \n
         0) Salir \n`));
-            
-        let disponible = Number(prompt(`Ingrese su dinero disponible: `));
         
         switch (opcionMetodoPago) {
             case 1:

@@ -1,8 +1,10 @@
-
+// Variables globales
+// ==================-==================
 let usuarios = [];
 let contrasenas = [];
 let opcionMenu = 0;
 let opcionProductos = 0;
+let opcionContinuar = "";
 let opcionMetodoPago = 0;
 let opcionCuotas = 0;
 let disponible = 0;
@@ -11,7 +13,10 @@ let vuelto = 0;
 let efectivo = 0;
 let credito = 0;
 let interes = 0;
+// ==================-==================
 
+// Creador de objetos (Productos)
+// ==================-==================
 function Producto(nombreProd, precioProd, categoriaProd, marcaProd, codigoProd) {
 
     this.nombreProd = nombreProd;
@@ -22,19 +27,24 @@ function Producto(nombreProd, precioProd, categoriaProd, marcaProd, codigoProd) 
 
     this.productoSeleccionado = function () {
 
-        alert(`Usted a seleccionado una unidad del producto: \n` +
-            this.nombreProd + `\n`
-        );
+        alert(`Usted ha seleccionado el producto \n
+         ${this.nombreProd}`);
 
     }
 
 }
+// ==================-==================
 
+// Productos creados
+// ==================-==================
 const producto1 = new Producto("ZOTAC GEFORCE RTX 2060", 619, "TARJETAS DE VIDEO", "NVIDIA", "BFXZON02");
 const producto2 = new Producto("AMD PROCESADOR RYZEN 5 5600", 224, "PROCESADORES", "AMD", "BFX56");
 const producto3 = new Producto("GIGABYTE PLACA B450M DS3H V2", 93, "MOTHERBOARD", "GIGABYTE", "BFXGB45D");
 const producto4 = new Producto("NETAC MEMORIA SHADOW DDR4 16GB PC3200 RED", 60, "MEMORIA RAM", "NETAC", "BFXNS16R");
+// ==================-==================
 
+// Funcion de carrito con todas las opciones correspondientes
+// ==================-==================
 function carrito() {
 
     let precioAPagar = 0;
@@ -58,7 +68,7 @@ function carrito() {
                 
                 producto1.productoSeleccionado();
                 precioAPagar = producto1.precioProd;
-                pago(opcionMetodoPago);
+                continuar();
 
             break;
         
@@ -66,7 +76,7 @@ function carrito() {
                 
                 producto2.productoSeleccionado();
                 precioAPagar = producto2.precioProd;
-                pago(opcionMetodoPago);
+                continuar();
 
             break;
             
@@ -74,7 +84,7 @@ function carrito() {
                 
                 producto3.productoSeleccionado();
                 precioAPagar = producto3.precioProd;
-                pago(opcionMetodoPago);
+                continuar();
 
             break;
             
@@ -82,7 +92,7 @@ function carrito() {
                 
                 producto4.productoSeleccionado();
                 precioAPagar = producto4.precioProd;
-                pago(opcionMetodoPago);
+                continuar();
 
             break;
         
@@ -90,13 +100,40 @@ function carrito() {
                 
                 alert("¡Volviendo al menú de inicio!");
                 
-            break;
+                break;
+            
+            default:
+
+                alert("¡Opción inválida!");
+
+                break;
             
         }
         
     } while (opcionProductos != 0);
 
+    // Funcion para continuar comprando
+    // ==================-==================
+    function continuar() {
 
+        opcionContinuar = prompt(`¿Desea continuar con la compra? \n
+        S/N\n`
+        ); 
+             
+        if (opcionContinuar == "S" || opcionContinuar == "s") {
+            pago(opcionMetodoPago);
+        } else if (opcionContinuar == "N" || opcionContinuar == "n") {
+            carrito();
+        } else {
+            alert("Opción incorrecta");
+            continuar(); 
+        }
+ 
+    }
+    // ==================-==================
+
+    // Funcion para elegir el metodo de pago y realizar las operaciones correspondientes
+    // ==================-==================
     function pago(opcionMetodoPago) {
 
         do {
@@ -134,6 +171,13 @@ function carrito() {
                     
                     alert("¡Volviendo al menú de productos!");
                 
+                    break;
+                
+                default:
+
+                    alert("Opción incorrecta");
+                    pago(opcionMetodoPago);
+                    
                 break;
                 
         }
@@ -141,6 +185,8 @@ function carrito() {
         } while (opcionMetodoPago != 0);
 
 
+        // Función para calcular interés, cuotas y vuelto
+        // ==================-==================
         function calculadoraPago() {
 
             interes = precioAPagar * (5 / 100);
@@ -201,7 +247,9 @@ function carrito() {
                 pago();
 
             }
-        
+
+        // Funcion para mostrar las cuotas y calcular el vuelto
+        // ==================-==================
         function cuotas() {
 
             do {
@@ -229,7 +277,7 @@ function carrito() {
                     case 2:
                         
                         alert(`¡Compra en 3 cuotas de USD ${precioCuotas[2]}, realizada!`);
-                        vuelto = disponibleTarjeta - precioMasInteres;
+                        vuelto = disponibleTarjeta - precioCuotas[2];
                         alert(`Le han sobrado: USD ${vuelto.toFixed(2)}`);
                         alert("¡Volviendo al menú de productos!");
                         opcionCuotas = 0;
@@ -240,7 +288,7 @@ function carrito() {
                     case 3:
                         
                         alert(`¡Compra en 6 cuotas de USD ${precioCuotas[5]}, realizada!`);
-                        vuelto = disponibleTarjeta - precioMasInteres;
+                        vuelto = disponibleTarjeta - precioCuotas[5];
                         alert(`Le han sobrado: USD ${vuelto.toFixed(2)}`);
                         alert("¡Volviendo al menú de productos!");
                         opcionCuotas = 0;
@@ -251,7 +299,7 @@ function carrito() {
                     case 4:
                         
                         alert(`¡Compra en 12 cuotas de USD ${precioCuotas[11]}, realizada!`);
-                        vuelto = disponibleTarjeta - precioMasInteres;
+                        vuelto = disponibleTarjeta - precioCuotas[11];
                         alert(`Le han sobrado: USD ${vuelto.toFixed(2)}`);
                         alert("¡Volviendo al menú de productos!");
                         opcionCuotas = 0;
@@ -264,20 +312,34 @@ function carrito() {
                         alert("¡Volviendo al menú de pagos!");
                         pago();
 
-                    break;
+                        break;
+                    
+                    default:
+
+                        alert("Opción incorrecta");
+                        cuotas();
+
+                        break;
                     
                 }
 
             } while (opcionCuotas != 0);
             
-    }
+        }
+        // ==================-==================
 
-    }
+        }
+        // ==================-==================
 
     }   
+    // ==================-==================
 
 }
+// ==================-==================
 
+
+// Lista de productos mostrados en consola
+// ==================-==================
 console.log("Lista de productos disponibles: ")
 console.log("===============================")
 console.log(producto1);
@@ -285,9 +347,15 @@ console.log(producto2);
 console.log(producto3);
 console.log(producto4);
 console.log("===============================")
+// ==================-==================
 
+// Mensaje de bienvenida
+// ==================-==================
 alert("¡Bienvenido a Banifox!");
+// ==================-==================
 
+// Menú de ingreso
+// ==================-==================
 do {
 
     opcionMenu = Number(prompt(`Seleccione una opción: \n
@@ -341,7 +409,16 @@ do {
 
             alert("¡Hasta luego!");
 
+            break;
+        
+        default:
+
+            alert("Opción incorrecta");
+
+
+            break;
+
     }
 
 }while (opcionMenu != 0);
-
+// ==================-==================
